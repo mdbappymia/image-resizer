@@ -11,3 +11,24 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.container{
+  text-align: center;
+  margin: 0 30px;
+}
+.orginal_image_container{
+  max-height: 600px;
+  /* max-width: 800px; */
+  overflow: auto;
+  margin: auto;
+}
+.orginal_image_container> image{
+height: 100%;
+width: 100%;
+}
+@media only screen and (max-width:666px)   {
+  .container{
+    margin: 0 10px;
+  }
+  
+}
