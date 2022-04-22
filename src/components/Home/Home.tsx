@@ -1,96 +1,71 @@
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC, useEffect } from "react";
 import { saveAs } from "file-saver";
-import { getBase64, imageEdit, reduce_image_file_size } from "../../functions";
+import { getBase64, reduce_image_file_size } from "../../functions";
+import ImageFilter from "../ImageFilter/ImageFilter";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store/store";
 
 const Home: FC = () => {
-  const [imfile, setImfile] = useState("");
-  const [img64, setImg64] = useState("");
-  const [image, setImage] = useState<any>("");
-  const [imageHeight, setImageHeight] = useState(0);
-  const [imageWidth, setImageWidth] = useState(0);
-  const [convertedHeight, setConvertedHeight] = useState(500);
-  const [convertedWidth, setConvertedWidth] = useState(500);
+  //   const [imfile, setImfile] = useState("");
+  //   const [initImage, setInitImage] = useState("");
+  //   const [image, setImage] = useState<any>("");
+  //   const [imageHeight, setImageHeight] = useState(0);
+  //   const [imageWidth, setImageWidth] = useState(0);
+  //   const [convertedHeight, setConvertedHeight] = useState(500);
+  //   const [convertedWidth, setConvertedWidth] = useState(500);
+  //   const [showFilter, setShowFilter] = useState(false);
 
-  //   filter state start
-  const [blur, setBlur] = useState(0);
-  const [brightness, setBrightness] = useState(50);
-  const [contrast, setContrast] = useState(20);
-  const [grayscale, setGrayscale] = useState(0);
-  const [invert, setInvert] = useState(0);
-  const [opacity, setOpacity] = useState(100);
-  const [saturate, setSaturate] = useState(100);
-  const [sepia, setSepia] = useState(0);
-  useCallback(() => {
-    imageEdit(
-      img64,
-      blur,
-      brightness,
-      contrast,
-      grayscale,
-      invert,
-      opacity,
-      saturate,
-      sepia
-    ).then((data) => {
-      setImage(data);
-    });
-  }, [
-    img64,
-    blur,
-    brightness,
-    contrast,
-    grayscale,
-    invert,
-    opacity,
-    saturate,
-    sepia,
-  ])();
+  const {
+    initImage,
+    image,
+    imageHeight,
+    imageWidth,
+    convertedHeight,
+    convertedWidth,
+    showFilter,
+  } = useSelector((state: RootState) => state.resize);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const orginalImage = document.getElementById("orginal_img");
-    setImageHeight(orginalImage?.clientHeight || 0);
-    setImageWidth(orginalImage?.clientWidth || 0);
-    // imgEditFunc();
-  }, [image]);
+    dispatch({
+      type: "setImageHeight",
+      payload: orginalImage?.clientHeight || 0,
+    });
+
+    dispatch({
+      type: "setImageWidth",
+      payload: orginalImage?.clientWidth || 0,
+    });
+  }, [image, dispatch]);
   const imageConvert = (e: any) => {
     const file = e.target.files[0];
-    setImfile(e.target.files[0].filename);
+    dispatch({ type: "setImfile", payload: e.target.files[0].filename });
 
     getBase64(file).then((base64: any) => {
-      setImg64(base64);
-      imageEdit(
-        base64,
-        blur,
-        brightness,
-        contrast,
-        grayscale,
-        invert,
-        opacity,
-        saturate,
-        sepia
-      ).then((data) => {
-        setImage(data);
-      });
+      dispatch({ type: "setInitImage", payload: base64 });
+
+      dispatch({ type: "setImage", payload: base64 });
     });
   };
 
   const resizeImage = (base64: any) => {
     reduce_image_file_size(base64, convertedHeight, convertedWidth).then(
-      (data) => {
-        setImage(data);
+      (data: any) => {
+        dispatch({ type: "setImage", payload: data });
       }
     );
   };
-  // console.log(imageHeight, imageWidth);
 
   const handleClear = () => {
-    setImg64("");
-    setImage("");
-    setImfile("");
+    dispatch({ type: "setImage", payload: "" });
+
+    dispatch({ type: "setImfile", payload: "" });
   };
 
   return (
-    <div className="container">
+    <div className="container mx-auto text-center">
       <h1 className="header-text">Image Resizer</h1>
       <h3>
         Orginal Image Size: {imageHeight} X {imageWidth}
@@ -101,7 +76,7 @@ const Home: FC = () => {
             className="image-input"
             id="input-image"
             type="file"
-            value={imfile}
+            // value={imfile}
             onChange={imageConvert}
           />
         </div>
@@ -110,83 +85,27 @@ const Home: FC = () => {
         <label>Convert to: </label>
         <br />
         <input
-          onChange={(e: any) => setConvertedHeight(e.target.value)}
+          onChange={(e: any) =>
+            dispatch({ type: "setConvertedHeight", payload: e.target.value })
+          }
           type="number"
           placeholder="Height"
         />
         <input
-          onChange={(e: any) => setConvertedWidth(e.target.value)}
+          onChange={(e: any) =>
+            dispatch({ type: "setConvertedWidth", payload: e.target.value })
+          }
           type="number"
           placeholder="Width"
         />
       </div>
       <div>
-        <h1>Image filter</h1>
-        <div>
-          <label>blur</label>
-          <input
-            type="range"
-            value={blur}
-            onChange={(e: any) => setBlur(parseInt(e.target.value))}
-            max={20}
-          />
-        </div>
-        <div>
-          <label>brightness</label>
-          <input
-            type="range"
-            value={brightness}
-            onChange={(e: any) => setBrightness(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>contrast</label>
-          <input
-            onChange={(e: any) => setContrast(parseInt(e.target.value))}
-            value={contrast}
-            type="range"
-          />
-        </div>
-        <div>
-          <label>grayscale</label>
-          <input
-            type="range"
-            onChange={(e: any) => setGrayscale(parseInt(e.target.value))}
-            value={grayscale}
-          />
-        </div>
-        <div>
-          <label>invert</label>
-          <input
-            type="range"
-            value={invert}
-            onChange={(e: any) => setInvert(parseInt(e.target.value))}
-          />
-        </div>
-        <div>
-          <label>opacity</label>
-          <input
-            type="range"
-            value={opacity}
-            onChange={(e: any) => setOpacity(parseInt(e.target.value))}
-          />
-        </div>
-        <div>
-          <label>saturate</label>
-          <input
-            type="range"
-            value={saturate}
-            onChange={(e: any) => setSaturate(parseInt(e.target.value))}
-          />
-        </div>
-        <div>
-          <label>sepia</label>
-          <input
-            type="range"
-            value={sepia}
-            onChange={(e: any) => setSepia(parseInt(e.target.value))}
-          />
-        </div>
+        <button
+          onClick={() => dispatch({ type: "setShowFilter", payload: true })}
+          className="bg-green-500"
+        >
+          Edit image
+        </button>
       </div>
       <div>
         <button
@@ -219,6 +138,11 @@ const Home: FC = () => {
         </div>
       )}
       <br />
+      {showFilter && (
+        <div className="absolute top-0 left-0 w-full bg-black text-white">
+          <ImageFilter resizeImage={resizeImage} />
+        </div>
+      )}
     </div>
   );
 };
