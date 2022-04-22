@@ -1,20 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300;1,400;1,500;1,700&display=swap');
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+    sans-serif; */
+    font-family: 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: rgb(235, 241, 242);
+  /* color: white; */
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-
+button{
+  cursor: pointer;
+}
+button:disabled{
+  background: lightgray;
+  border: 1px solid;
+  cursor: auto;
+}
 .container{
   text-align: center;
   margin: 0 30px;
+}
+.header-text{
+  text-transform: uppercase;
+  font-family: 'Lobster', cursive;
+  font-size: 35px;
+  letter-spacing: 5px;
+
 }
 .orginal_image_container{
   max-height: 600px;
@@ -25,6 +44,67 @@ code {
 .orginal_image_container> image{
 height: 100%;
 width: 100%;
+}
+
+.image-input{
+  padding: 35px 20px;
+  border: 2px solid ;
+  text-align: center;
+  position: relative;
+  background-color: rgb(245, 237, 237);
+  margin: 20px;
+  border-radius: 10px;
+}
+.image-input:hover{
+  background: rgb(198, 197, 197);
+  cursor: pointer;
+}
+
+.image-input:before {
+  position: absolute;
+  bottom: 5px;
+  content: " (or) Drag and Drop files here";
+  color: #8c9596;
+  font-weight: 900;
+
+}
+.convert-input-area{
+  /* display: flex; */
+  justify-content: center;
+  margin: 20px 0;
+}
+.convert-input-area label{
+  margin-right: 10px;
+  font-size: 25px
+}
+.convert-input-area input{
+  padding: 5px;
+  font-size: 20px;
+  min-width: 50px;
+}
+.resize-button{
+  padding: 10px 20px;
+  background: indigo;
+  outline: none;
+  border: none;
+  color: white;
+  font-weight: bold;
+}
+.clear-button{
+  padding: 10px 20px;
+  background: rgb(216, 13, 53);
+  outline: none;
+  border: none;
+  color: white;
+  font-weight: bold;
+}
+.download-button{
+  padding: 10px 20px;
+  background: green;
+  outline: none;
+  border: none;
+  color: white;
+  font-weight: bold;
 }
 @media only screen and (max-width:666px)   {
   .container{
