@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect } from "react";
+import React, { FC, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { imageEdit, reduce_image_file_size } from "../../functions";
@@ -26,7 +26,9 @@ const ImageFilter: FC<Iprops> = ({ resizeImage }) => {
   } = useSelector((state: RootState) => state.filter);
 
   useEffect(() => {
-    // dispatch({ type: "setImg64", payload: initImage });
+    dispatch({ type: "setImg64", payload: initImage });
+  }, [dispatch, initImage]);
+  const handleSave = () => {
     imageEdit(
       initImage,
       blur,
@@ -38,27 +40,14 @@ const ImageFilter: FC<Iprops> = ({ resizeImage }) => {
       saturate,
       sepia
     ).then((data: any) => {
-      dispatch({ type: "setImg64", payload: data });
+      // dispatch({ type: "setImg64", payload: data });
+      dispatch({ type: "setShowFilter", payload: false });
+      reduce_image_file_size(data, convertedHeight, convertedWidth).then(
+        (data: any) => {
+          dispatch({ type: "setImage", payload: data });
+        }
+      );
     });
-  }, [
-    dispatch,
-    initImage,
-    blur,
-    brightness,
-    contrast,
-    grayscale,
-    invert,
-    opacity,
-    saturate,
-    sepia,
-  ]);
-  const handleSave = () => {
-    dispatch({ type: "setShowFilter", payload: false });
-    reduce_image_file_size(img64, convertedHeight, convertedWidth).then(
-      (data: any) => {
-        dispatch({ type: "setImage", payload: data });
-      }
-    );
   };
   return (
     <div>
@@ -147,8 +136,35 @@ const ImageFilter: FC<Iprops> = ({ resizeImage }) => {
           }
         />
       </div>
+
+      {/* blur,
+    brightness,
+    contrast,
+    grayscale,
+    invert,
+    opacity,
+    saturate,
+    sepia,
+
+    `brightness(${brightness * 2}%) contrast(${
+        contrast / 20
+      }) blur(${
+        blur / 5
+      }px) grayscale(${grayscale}%) invert(${invert}%) opacity(${opacity}%) saturate(${saturate}%) sepia(${sepia}%)`; */}
+
       <div className="flex justify-center">
-        <img className="w-96 h-96" src={img64} alt="" />
+        <img
+          style={{
+            filter: `brightness(${brightness * 2}%) contrast(${
+              contrast / 20
+            }) blur(${
+              blur / 5
+            }px) grayscale(${grayscale}%) invert(${invert}%) opacity(${opacity}%) saturate(${saturate}%) sepia(${sepia}%)`,
+          }}
+          className="w-96 h-96"
+          src={img64}
+          alt=""
+        />
       </div>
       <button onClick={handleSave}>Save</button>
       <button
