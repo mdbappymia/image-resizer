@@ -17,7 +17,6 @@ const Home: FC = () => {
   //   const [showFilter, setShowFilter] = useState(false);
 
   const {
-    initImage,
     image,
     imageHeight,
     imageWidth,
@@ -60,8 +59,9 @@ const Home: FC = () => {
 
   const handleClear = () => {
     dispatch({ type: "setImage", payload: "" });
-
     dispatch({ type: "setImfile", payload: "" });
+    dispatch({ type: "setConvertedHeight", payload: "" });
+    dispatch({ type: "setConvertedWidth", payload: "" });
   };
 
   return (
@@ -85,6 +85,7 @@ const Home: FC = () => {
         <label>Convert to: </label>
         <br />
         <input
+          value={convertedHeight}
           onChange={(e: any) =>
             dispatch({ type: "setConvertedHeight", payload: e.target.value })
           }
@@ -92,6 +93,7 @@ const Home: FC = () => {
           placeholder="Height"
         />
         <input
+          value={convertedWidth}
           onChange={(e: any) =>
             dispatch({ type: "setConvertedWidth", payload: e.target.value })
           }
@@ -101,6 +103,7 @@ const Home: FC = () => {
       </div>
       <div>
         <button
+          disabled={!image}
           onClick={() => dispatch({ type: "setShowFilter", payload: true })}
           className="bg-green-500"
         >
