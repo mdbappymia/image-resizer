@@ -78,7 +78,7 @@ const Home: FC = () => {
       </div>
       <div className="my-5">
         <label className="text-xl font-bold">
-          Convert to: <span className="text-sm">height (px) X width (px)</span>
+          HEIGHT (px) <span className="font-normal">X</span> WIDTH (px)
         </label>
         <br />
         <input
@@ -107,14 +107,14 @@ const Home: FC = () => {
           onClick={() => dispatch({ type: "setShowFilter", payload: true })}
           className="bg-green-500 px-4 py-1 hover:bg-green-600 text-white m-1"
         >
-          Edit image
+          <i className="fas fa-edit"></i> Edit image
         </button>
         <button
           disabled={!image}
           className="bg-indigo-500 px-4 py-1 hover:bg-indigo-600 text-white m-1"
           onClick={() => resizeImage(image)}
         >
-          Resize
+          <i className="fas fa-crop-alt"></i> Resize
         </button>
 
         <button
@@ -122,7 +122,7 @@ const Home: FC = () => {
           className="bg-red-500 px-4 py-1 hover:bg-red-600 text-white m-1"
           onClick={handleClear}
         >
-          Clear
+          <i className="fas fa-trash-alt"></i> Clear
         </button>
         <button
           disabled={!image}
