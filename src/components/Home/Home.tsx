@@ -57,6 +57,15 @@ const Home: FC = () => {
     dispatch({ type: "setImfile", payload: "" });
     dispatch({ type: "setConvertedHeight", payload: "500" });
     dispatch({ type: "setConvertedWidth", payload: "500" });
+    dispatch({
+      type: "setImageHeight",
+      payload: 0,
+    });
+
+    dispatch({
+      type: "setImageWidth",
+      payload: 0,
+    });
   };
 
   return (
