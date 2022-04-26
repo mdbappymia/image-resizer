@@ -40,7 +40,8 @@ export const imageEdit = async (
   invert: number,
   opacity: number,
   saturate: number,
-  sepia: number
+  sepia: number,
+  hue_rotate: number
 ) => {
   let resized_base64 = await new Promise((resolve) => {
     let img = new Image();
@@ -56,7 +57,7 @@ export const imageEdit = async (
         contrast / 20
       }) blur(${
         blur / 5
-      }px) grayscale(${grayscale}%) invert(${invert}%) opacity(${opacity}%) saturate(${saturate}%) sepia(${sepia}%)`;
+      }px) grayscale(${grayscale}%) invert(${invert}%) opacity(${opacity}%) saturate(${saturate}%) sepia(${sepia}%) hue-rotate(${hue_rotate}deg)`;
 
       ctx.drawImage(img, 0, 0, width, height);
       resolve(canvas.toDataURL());

@@ -8,6 +8,7 @@ interface FilterState {
   opacity: number;
   saturate: number;
   sepia: number;
+  hue_rotate: number;
 }
 
 const initialState: FilterState = {
@@ -20,6 +21,7 @@ const initialState: FilterState = {
   opacity: 100,
   saturate: 100,
   sepia: 0,
+  hue_rotate: 0,
 };
 export const filterReducer = (state = initialState, action: any) => {
   switch (action.type) {
@@ -75,6 +77,12 @@ export const filterReducer = (state = initialState, action: any) => {
       return {
         ...state,
         sepia: action.payload,
+      };
+    }
+    case "setHueRotate": {
+      return {
+        ...state,
+        hue_rotate: action.payload,
       };
     }
     default: {

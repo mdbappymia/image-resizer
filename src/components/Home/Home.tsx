@@ -7,15 +7,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store/store";
 
 const Home: FC = () => {
-  //   const [imfile, setImfile] = useState("");
-  //   const [initImage, setInitImage] = useState("");
-  //   const [image, setImage] = useState<any>("");
-  //   const [imageHeight, setImageHeight] = useState(0);
-  //   const [imageWidth, setImageWidth] = useState(0);
-  //   const [convertedHeight, setConvertedHeight] = useState(500);
-  //   const [convertedWidth, setConvertedWidth] = useState(500);
-  //   const [showFilter, setShowFilter] = useState(false);
-
   const {
     image,
     imageHeight,
@@ -23,20 +14,24 @@ const Home: FC = () => {
     convertedHeight,
     convertedWidth,
     showFilter,
+    imfile,
   } = useSelector((state: RootState) => state.resize);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const orginalImage = document.getElementById("orginal_img");
-    dispatch({
-      type: "setImageHeight",
-      payload: orginalImage?.clientHeight || 0,
-    });
+    var i = new Image();
+    i.onload = function () {
+      dispatch({
+        type: "setImageHeight",
+        payload: i.height || 0,
+      });
 
-    dispatch({
-      type: "setImageWidth",
-      payload: orginalImage?.clientWidth || 0,
-    });
+      dispatch({
+        type: "setImageWidth",
+        payload: i.width || 0,
+      });
+    };
+    i.src = image;
   }, [image, dispatch]);
   const imageConvert = (e: any) => {
     const file = e.target.files[0];
@@ -50,7 +45,7 @@ const Home: FC = () => {
   };
 
   const resizeImage = (base64: any) => {
-    reduce_image_file_size(base64, convertedHeight, convertedWidth).then(
+    reduce_image_file_size(base64, convertedWidth, convertedHeight).then(
       (data: any) => {
         dispatch({ type: "setImage", payload: data });
       }
@@ -60,8 +55,8 @@ const Home: FC = () => {
   const handleClear = () => {
     dispatch({ type: "setImage", payload: "" });
     dispatch({ type: "setImfile", payload: "" });
-    dispatch({ type: "setConvertedHeight", payload: "" });
-    dispatch({ type: "setConvertedWidth", payload: "" });
+    dispatch({ type: "setConvertedHeight", payload: "500" });
+    dispatch({ type: "setConvertedWidth", payload: "500" });
   };
 
   return (
@@ -76,15 +71,18 @@ const Home: FC = () => {
             className="image-input"
             id="input-image"
             type="file"
-            // value={imfile}
+            value={imfile}
             onChange={imageConvert}
           />
         </div>
       </div>
-      <div className="convert-input-area">
-        <label>Convert to: </label>
+      <div className="my-5">
+        <label className="text-xl font-bold">
+          Convert to: <span className="text-sm">height (px) X width (px)</span>
+        </label>
         <br />
         <input
+          className="p-2 mx-1 border"
           value={convertedHeight}
           onChange={(e: any) =>
             dispatch({ type: "setConvertedHeight", payload: e.target.value })
@@ -93,6 +91,7 @@ const Home: FC = () => {
           placeholder="Height"
         />
         <input
+          className="p-2 mx-1 border"
           value={convertedWidth}
           onChange={(e: any) =>
             dispatch({ type: "setConvertedWidth", payload: e.target.value })
@@ -101,19 +100,18 @@ const Home: FC = () => {
           placeholder="Width"
         />
       </div>
+
       <div>
         <button
           disabled={!image}
           onClick={() => dispatch({ type: "setShowFilter", payload: true })}
-          className="bg-green-500"
+          className="bg-green-500 px-4 py-1 hover:bg-green-600 text-white m-1"
         >
           Edit image
         </button>
-      </div>
-      <div>
         <button
           disabled={!image}
-          className="resize-button"
+          className="bg-indigo-500 px-4 py-1 hover:bg-indigo-600 text-white m-1"
           onClick={() => resizeImage(image)}
         >
           Resize
@@ -121,23 +119,29 @@ const Home: FC = () => {
 
         <button
           disabled={!image}
-          className="clear-button"
+          className="bg-red-500 px-4 py-1 hover:bg-red-600 text-white m-1"
           onClick={handleClear}
         >
           Clear
         </button>
-        <br />
         <button
-          className="download-button"
           disabled={!image}
           onClick={() => saveAs(image, "image.jpg")}
+          className="fas fa-arrow-down p-2 text-xl border-2 rounded-full bg-red-800 text-white hover:bg-white hover:text-gray-400 transition-all "
         >
-          Download image
+          Download
         </button>
       </div>
       {image.length > 0 && (
-        <div className="orginal_image_container">
-          <img id="orginal_img" src={image} alt="" />
+        <div className="my-10 p-3 mx-auto">
+          <div
+            style={{ maxWidth: imageWidth }}
+            className="text-center orginal_img border-4 border-black rounded-xl mx-auto"
+          >
+            <div className="flex justify-center">
+              <img id="orginal_img" src={image} alt="" />
+            </div>
+          </div>
         </div>
       )}
       <br />

@@ -19,13 +19,15 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-button{
-  cursor: pointer;
-}
 button:disabled{
-  background: lightgray;
-  border: 1px solid;
-  cursor: auto;
+  background-color: gray;
+}
+button:disabled:hover{
+  background: gray;
+}
+.orginal_img{
+max-height: 800px;
+overflow: auto;
 }
 
 .header-text{
@@ -35,16 +37,7 @@ button:disabled{
   letter-spacing: 5px;
 
 }
-.orginal_image_container{
-  max-height: 600px;
-  /* max-width: 800px; */
-  overflow: auto;
-  margin: auto;
-}
-.orginal_image_container> image{
-height: 100%;
-width: 100%;
-}
+
 
 .image-input{
   padding: 35px 20px;
@@ -63,49 +56,16 @@ width: 100%;
 .image-input:before {
   position: absolute;
   bottom: 5px;
+  left:20%;
   content: " (or) Drag and Drop files here";
   color: #8c9596;
   font-weight: 900;
 
 }
-.convert-input-area{
-  /* display: flex; */
-  justify-content: center;
-  margin: 20px 0;
-}
-.convert-input-area label{
-  margin-right: 10px;
-  font-size: 25px
-}
-.convert-input-area input{
-  padding: 5px;
-  font-size: 20px;
-  min-width: 50px;
-}
-.resize-button{
-  padding: 10px 20px;
-  background: indigo;
-  outline: none;
-  border: none;
-  color: white;
-  font-weight: bold;
-}
-.clear-button{
-  padding: 10px 20px;
-  background: rgb(216, 13, 53);
-  outline: none;
-  border: none;
-  color: white;
-  font-weight: bold;
-}
-.download-button{
-  padding: 10px 20px;
-  background: green;
-  outline: none;
-  border: none;
-  color: white;
-  font-weight: bold;
-}
+
+
+
+
 @media only screen and (max-width:666px)   {
   .container{
     margin: 0 10px;
